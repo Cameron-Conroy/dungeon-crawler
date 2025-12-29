@@ -3,9 +3,9 @@
 #include "EntityManager.hpp"
 #include "Component.hpp"
 #include "../core/EventBus.hpp"
+#include "../util/Random.hpp"
 #include <SFML/Graphics.hpp>
 #include <cmath>
-#include <cstdlib>
 
 // Physics System - handles movement and room clamping
 class PhysicsSystem {
@@ -74,10 +74,10 @@ private:
         ai->wanderTimer -= dt;
         if (ai->wanderTimer <= 0.f) {
             float interval = ai->behavior == AIBehavior::Erratic ? 0.3f : ai->directionChangeInterval;
-            float angle = static_cast<float>(std::rand()) / RAND_MAX * 2.f * 3.14159f;
+            float angle = util::randomFloat(0.f, 2.f * 3.14159f);
             physics->velocity.x = std::cos(angle) * ai->wanderSpeed;
             physics->velocity.y = std::sin(angle) * ai->wanderSpeed;
-            ai->wanderTimer = interval + static_cast<float>(std::rand()) / RAND_MAX * interval;
+            ai->wanderTimer = interval + util::randomFloat(0.f, interval);
         }
     }
 

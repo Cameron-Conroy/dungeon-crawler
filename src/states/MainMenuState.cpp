@@ -42,8 +42,8 @@ void MainMenuState::setupUI() {
     }
 }
 
-void MainMenuState::update(float dt) {
-    pulseTimer += dt;
+void MainMenuState::update(float /*dt*/) {
+    // No-op: menu state doesn't need time-based updates
 }
 
 void MainMenuState::render(sf::RenderWindow& window) {
@@ -55,7 +55,7 @@ void MainMenuState::render(sf::RenderWindow& window) {
 
     // Update buttons with mouse position
     for (auto& button : buttons) {
-        button.update(mousePos, 0.016f);
+        button.update(mousePos, ASSUMED_DT);
     }
 
     // Draw title

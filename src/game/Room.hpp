@@ -3,6 +3,7 @@
 #include "../ecs/EntityManager.hpp"
 #include "../ecs/EntityFactory.hpp"
 #include "../core/EventBus.hpp"
+#include "../util/Random.hpp"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <functional>
