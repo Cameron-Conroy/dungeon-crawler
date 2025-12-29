@@ -196,6 +196,7 @@ public:
                     // Emit events
                     if (!health->isAlive()) {
                         if (target->hasComponent<EnemyTag>()) {
+                            target->active = false;  // Mark for removal
                             EventBus::instance().emit<EnemyDiedEvent>(
                                 target->getId(), target->position.x, target->position.y
                             );

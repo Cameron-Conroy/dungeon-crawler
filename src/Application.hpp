@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/StateManager.hpp"
+#include "core/AssetManager.hpp"
 #include "states/MainMenuState.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -10,11 +11,13 @@ public:
         : window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "Dungeon Crawler")
     {
         window.setFramerateLimit(60);
+        loadAssets();
         stateManager.push(std::make_unique<MainMenuState>(
             sf::Vector2f{static_cast<float>(WINDOW_WIDTH), static_cast<float>(WINDOW_HEIGHT)}
         ));
     }
 
+public:
     void run() {
         sf::Clock clock;
 
@@ -37,6 +40,10 @@ public:
     }
 
 private:
+    void loadAssets() {
+        AssetManager::instance().loadFont("pixel", "assets/fonts/PressStart2P-Regular.ttf");
+    }
+
     void processEvents() {
         while (auto event = window.pollEvent()) {
             if (event->is<sf::Event::Closed>()) {

@@ -153,23 +153,23 @@ public:
 private:
     void setupDoors() {
         float doorWidth = 60.f;
-        float doorDepth = 20.f;
+        float doorDepth = 40.f;  // Extended to reach into playable area
 
-        // North door
+        // North door - extends down into playable area
         doors.emplace_back(Direction::North,
-            sf::FloatRect({size.x / 2.f - doorWidth / 2.f, 20.f}, {doorWidth, doorDepth}));
+            sf::FloatRect({size.x / 2.f - doorWidth / 2.f, 20.f}, {doorWidth, doorDepth + 20.f}));
 
-        // South door
+        // South door - extends up into playable area
         doors.emplace_back(Direction::South,
-            sf::FloatRect({size.x / 2.f - doorWidth / 2.f, size.y - 40.f}, {doorWidth, doorDepth}));
+            sf::FloatRect({size.x / 2.f - doorWidth / 2.f, size.y - 60.f}, {doorWidth, doorDepth + 20.f}));
 
-        // East door
+        // East door - extends left into playable area
         doors.emplace_back(Direction::East,
-            sf::FloatRect({size.x - 40.f, size.y / 2.f - doorWidth / 2.f}, {doorDepth, doorWidth}));
+            sf::FloatRect({size.x - 60.f, size.y / 2.f - doorWidth / 2.f}, {doorDepth + 20.f, doorWidth}));
 
-        // West door
+        // West door - extends right into playable area
         doors.emplace_back(Direction::West,
-            sf::FloatRect({20.f, size.y / 2.f - doorWidth / 2.f}, {doorDepth, doorWidth}));
+            sf::FloatRect({20.f, size.y / 2.f - doorWidth / 2.f}, {doorDepth + 20.f, doorWidth}));
     }
 
     void unlockDoors() {

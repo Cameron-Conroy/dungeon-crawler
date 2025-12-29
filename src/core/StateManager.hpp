@@ -8,9 +8,8 @@
 class StateManager {
 public:
     void push(std::unique_ptr<GameState> state) {
-        if (!states.empty()) {
-            states.back()->exit();
-        }
+        // Note: Don't call exit() on current state when pushing
+        // The current state is paused, not exited (it stays on the stack)
         state->setManager(this);
         states.push_back(std::move(state));
         states.back()->enter();
@@ -28,6 +27,17 @@ public:
             states.back()->exit();
             states.pop_back();
         }
+        state->setManager(this);
+        states.push_back(std::move(state));
+        states.back()->enter();
+    }
+
+    void reset(std::unique_ptr<GameState> state) {
+        while (!states.empty()) {
+            states.back()->exit();
+            states.pop_back();
+        }
+        pendingPop = false;
         state->setManager(this);
         states.push_back(std::move(state));
         states.back()->enter();
@@ -65,9 +75,6 @@ private:
         if (pendingPop && !states.empty()) {
             states.pop_back();
             pendingPop = false;
-            if (!states.empty()) {
-                states.back()->enter();
-            }
         }
     }
 

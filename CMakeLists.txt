@@ -12,6 +12,7 @@ set(SOURCES
     src/main.cpp
     src/states/PlayingState.cpp
     src/states/MainMenuState.cpp
+    src/states/PausedState.cpp
     src/states/GameOverState.cpp
     src/states/VictoryState.cpp
 )
@@ -36,6 +37,7 @@ set(HEADERS
     src/states/PausedState.hpp
     src/states/GameOverState.hpp
     src/states/VictoryState.hpp
+    src/ui/MenuButton.hpp
 )
 
 # Create executable
