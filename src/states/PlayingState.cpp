@@ -84,8 +84,11 @@ void PlayingState::enterRoom() {
 
         const auto& bounds = room->getBounds();
         for (int i = 0; i < count; ++i) {
-            float x = bounds.position.x + 50.f + (std::rand() % static_cast<int>(bounds.size.x - 100.f));
-            float y = bounds.position.y + 50.f + (std::rand() % static_cast<int>(bounds.size.y - 100.f));
+            // Ensure spawn range is always positive to prevent undefined behavior (issue #3)
+            int rangeX = std::max(1, static_cast<int>(bounds.size.x - 100.f));
+            int rangeY = std::max(1, static_cast<int>(bounds.size.y - 100.f));
+            float x = bounds.position.x + 50.f + (std::rand() % rangeX);
+            float y = bounds.position.y + 50.f + (std::rand() % rangeY);
 
             EntityFactory::EnemyType type = (std::rand() % 3 == 0)
                 ? EntityFactory::EnemyType::Bat

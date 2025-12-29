@@ -46,10 +46,7 @@ public:
             if (grid.find(posKey(pos)) != grid.end()) continue;
 
             // Create combat room
-            auto& room = createRoom(nextId++, RoomType::Combat, pos);
-
-            // More enemies on later floors
-            room.setEnemyCount(2 + floorNumber / 2, 4 + floorNumber / 2);
+            createRoom(nextId++, RoomType::Combat, pos);
 
             // Connect to adjacent rooms
             connectToNeighbors(pos);
@@ -68,8 +65,7 @@ public:
                         [furthestId](const auto& r) { return r->getId() == furthestId; }),
                         rooms.end());
 
-                    auto& exitRoom = createRoom(furthestId, RoomType::Exit, exitPos);
-                    exitRoom.setEnemyCount(0, 0);
+                    createRoom(furthestId, RoomType::Exit, exitPos);
                     connectToNeighbors(exitPos);
                     break;
                 }

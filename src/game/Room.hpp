@@ -27,25 +27,9 @@ public:
         setupDoors();
     }
 
-    void enter(EntityManager& entities, sf::Vector2f playerSpawnPos) {
-        cleared = false;
-        entities.clear();
-
-        // Create player
-        EntityFactory::createPlayer(entities, playerSpawnPos, bounds);
-
-        // Spawn enemies for combat rooms
-        if (type == RoomType::Combat) {
-            spawnEnemies(entities);
-        }
-
-        // Subscribe to enemy death events
-        EventBus::instance().subscribe<EnemyDiedEvent>([this](const EnemyDiedEvent& e) {
-            onEnemyDied(e);
-        });
-
-        EventBus::instance().emit<RoomEnteredEvent>(id);
-    }
+    // Note: Room no longer manages entity spawning or event subscriptions.
+    // PlayingState handles player/enemy creation and event handling directly.
+    // This avoids subscription accumulation (issue #2) and code duplication (issue #4).
 
     void update(EntityManager& entities) {
         if (!cleared && type == RoomType::Combat) {
@@ -145,11 +129,6 @@ public:
     const sf::FloatRect& getBounds() const { return bounds; }
     const std::vector<Door>& getDoors() const { return doors; }
 
-    void setEnemyCount(int min, int max) {
-        minEnemies = min;
-        maxEnemies = max;
-    }
-
 private:
     void setupDoors() {
         float doorWidth = 60.f;
@@ -180,36 +159,10 @@ private:
         }
     }
 
-    void spawnEnemies(EntityManager& entities) {
-        int count = minEnemies + (std::rand() % (maxEnemies - minEnemies + 1));
-
-        for (int i = 0; i < count; ++i) {
-            float x = bounds.position.x + 50.f + (std::rand() % static_cast<int>(bounds.size.x - 100.f));
-            float y = bounds.position.y + 50.f + (std::rand() % static_cast<int>(bounds.size.y - 100.f));
-
-            // Randomly choose enemy type
-            EntityFactory::EnemyType type = (std::rand() % 3 == 0)
-                ? EntityFactory::EnemyType::Bat
-                : EntityFactory::EnemyType::Slime;
-
-            EntityFactory::createEnemy(entities, type, {x, y}, bounds);
-        }
-    }
-
-    void onEnemyDied(const EnemyDiedEvent& e) {
-        // 30% chance to spawn health pickup
-        if (std::rand() % 100 < 30) {
-            // Note: We can't spawn here directly since we don't have EntityManager reference
-            // The Playing state will handle this via event subscription
-        }
-    }
-
     int id;
     RoomType type;
     sf::Vector2f size;
     sf::FloatRect bounds;
     std::vector<Door> doors;
     bool cleared = false;
-    int minEnemies = 2;
-    int maxEnemies = 4;
 };
