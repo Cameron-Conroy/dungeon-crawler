@@ -3,6 +3,7 @@
 #include "VictoryState.hpp"
 #include "PausedState.hpp"
 #include "../core/StateManager.hpp"
+#include "../util/Random.hpp"
 
 PlayingState::PlayingState(sf::Vector2f windowSize)
     : windowSize(windowSize) {}
@@ -30,7 +31,7 @@ void PlayingState::setupEventHandlers() {
         runState.enemiesKilled++;
 
         // 30% chance to spawn health pickup
-        if (std::rand() % 100 < 30) {
+        if (util::randomChance(0.3f)) {
             EntityFactory::createHealthPickup(entities, {e.x, e.y});
         }
     });
@@ -80,14 +81,14 @@ void PlayingState::enterRoom() {
     if (room->getType() == RoomType::Combat && !room->isCleared()) {
         int minEnemies = 2 + runState.currentFloor / 2;
         int maxEnemies = 4 + runState.currentFloor / 2;
-        int count = minEnemies + (std::rand() % (maxEnemies - minEnemies + 1));
+        int count = util::randomInt(minEnemies, maxEnemies);
 
         const auto& bounds = room->getBounds();
         for (int i = 0; i < count; ++i) {
-            float x = bounds.position.x + 50.f + (std::rand() % static_cast<int>(bounds.size.x - 100.f));
-            float y = bounds.position.y + 50.f + (std::rand() % static_cast<int>(bounds.size.y - 100.f));
+            float x = bounds.position.x + 50.f + util::randomFloat(0.f, bounds.size.x - 100.f);
+            float y = bounds.position.y + 50.f + util::randomFloat(0.f, bounds.size.y - 100.f);
 
-            EntityFactory::EnemyType type = (std::rand() % 3 == 0)
+            EntityFactory::EnemyType type = util::randomChance(1.f / 3.f)
                 ? EntityFactory::EnemyType::Bat
                 : EntityFactory::EnemyType::Slime;
 
@@ -172,12 +173,13 @@ void PlayingState::checkRoomTransitions() {
 
 void PlayingState::transitionToRoom(int targetId, Direction fromDir) {
     // Calculate opposite direction for spawn
-    Direction opposite;
+    Direction opposite = Direction::South;  // Default initialization
     switch (fromDir) {
         case Direction::North: opposite = Direction::South; break;
         case Direction::South: opposite = Direction::North; break;
         case Direction::East:  opposite = Direction::West; break;
         case Direction::West:  opposite = Direction::East; break;
+        default: break;  // All cases covered, but satisfies -Wswitch-default
     }
 
     transitioning = true;

@@ -24,8 +24,10 @@ public:
 private:
     void setupUI();
 
+    // Assumed delta time for button animations when actual dt unavailable in render
+    static constexpr float ASSUMED_DT = 1.f / 60.f;  // ~0.016f at 60 FPS
+
     sf::Vector2f windowSize;
-    float pulseTimer = 0.f;
 
     std::optional<sf::Text> titleLine1;
     std::optional<sf::Text> titleLine2;

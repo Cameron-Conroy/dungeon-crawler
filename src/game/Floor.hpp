@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Room.hpp"
+#include "../util/Random.hpp"
 #include <vector>
 #include <memory>
 #include <map>
-#include <cstdlib>
 #include <algorithm>
 
 struct GridPos {
@@ -39,7 +39,7 @@ public:
 
         while (rooms.size() < static_cast<size_t>(roomCount) && !frontier.empty()) {
             // Pick random frontier position
-            int idx = std::rand() % frontier.size();
+            int idx = util::randomInt(0, static_cast<int>(frontier.size()) - 1);
             GridPos pos = frontier[idx];
             frontier.erase(frontier.begin() + idx);
 

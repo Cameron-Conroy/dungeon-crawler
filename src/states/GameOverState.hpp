@@ -25,6 +25,9 @@ public:
 private:
     void setupUI();
 
+    // Assumed delta time for button animations when actual dt unavailable in render
+    static constexpr float ASSUMED_DT = 1.f / 60.f;
+
     sf::Vector2f windowSize;
     RunState stats;
 

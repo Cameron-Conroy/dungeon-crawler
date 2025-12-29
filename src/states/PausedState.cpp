@@ -51,7 +51,7 @@ void PausedState::render(sf::RenderWindow& window) {
 
     // Update buttons with mouse position
     for (auto& button : buttons) {
-        button.update(mousePos, 0.016f);
+        button.update(mousePos, ASSUMED_DT);
     }
 
     // Pause box background
