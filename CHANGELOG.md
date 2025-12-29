@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+- Clickable text menus with pixel art style font on all game screens (main menu, pause, game over, victory)
+- Mouse hover effects on menu buttons (color change with ">" cursor indicator)
+
+### Fixed
+- Doors are now walkable - previously player couldn't pass through green doorways
+- Game no longer crashes when player is hit by an enemy
+- Enemies now properly die when their health reaches zero
+- RESUME button in pause menu now continues the game instead of restarting it
+- QUIT button in pause/game over/victory screens now correctly returns to main menu
+
 ## [0.1.0] - 2025-12-28
 
 ### Added

@@ -1,12 +1,12 @@
-#include "Game.hpp"
+#include "Application.hpp"
 #include <cstdlib>
 #include <ctime>
 
 int main() {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
-    Game game;
-    game.run();
+    Application app;
+    app.run();
 
     return 0;
 }
