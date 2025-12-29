@@ -46,3 +46,38 @@ target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Audio)
 
 # Include directories
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src)
+
+# ============================================================================
+# Testing with Catch2
+# ============================================================================
+
+option(BUILD_TESTS "Build the test suite" ON)
+
+if(BUILD_TESTS)
+    include(FetchContent)
+    FetchContent_Declare(
+        Catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG v3.5.0
+    )
+    FetchContent_MakeAvailable(Catch2)
+
+    set(TEST_SOURCES
+        tests/test_components.cpp
+        tests/test_entity.cpp
+        tests/test_entity_factory.cpp
+        tests/test_systems.cpp
+        tests/test_event_bus.cpp
+        tests/test_room.cpp
+        tests/test_floor.cpp
+        tests/test_run_state.cpp
+    )
+
+    add_executable(DungeonCrawlerTests ${TEST_SOURCES})
+    target_link_libraries(DungeonCrawlerTests PRIVATE Catch2::Catch2WithMain SFML::Graphics SFML::Audio)
+    target_include_directories(DungeonCrawlerTests PRIVATE ${CMAKE_SOURCE_DIR}/src)
+
+    include(CTest)
+    include(Catch)
+    catch_discover_tests(DungeonCrawlerTests)
+endif()
