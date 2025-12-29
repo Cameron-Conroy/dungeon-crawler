@@ -106,7 +106,8 @@ TEST_CASE("Room spawn position from door", "[room]") {
 
 TEST_CASE("Room Combat clears when no enemies", "[room]") {
     Room room(0, RoomType::Combat, {800.f, 600.f});
-    room.setEnemyCount(0, 0);  // No enemies spawned
+    // Enemy spawning is now managed by PlayingState, not Room
+    // An empty EntityManager simulates a room with no enemies
     EntityManager manager;
     EventBus::instance().clear();
 
